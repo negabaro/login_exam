@@ -11,6 +11,7 @@ gem 'omniauth-facebook', '~> 3.0'
 gem 'omniauth-twitter', '~> 1.2', '>= 1.2.1'
 
 gem 'sqlite3'
+gem 'mysql2'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'

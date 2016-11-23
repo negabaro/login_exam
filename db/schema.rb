@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20161114161030) do
 
-  create_table "social_profiles", force: :cascade do |t|
+  create_table "social_profiles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.string   "provider"
     t.string   "uid"
@@ -22,16 +22,16 @@ ActiveRecord::Schema.define(version: 20161114161030) do
     t.string   "url"
     t.string   "image_url"
     t.string   "description"
-    t.text     "others"
-    t.text     "credentials"
-    t.text     "raw_info"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["provider", "uid"], name: "index_social_profiles_on_provider_and_uid", unique: true
-    t.index ["user_id"], name: "index_social_profiles_on_user_id"
+    t.text     "others",      limit: 65535
+    t.text     "credentials", limit: 65535
+    t.text     "raw_info",    limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["provider", "uid"], name: "index_social_profiles_on_provider_and_uid", unique: true, using: :btree
+    t.index ["user_id"], name: "index_social_profiles_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -48,9 +48,10 @@ ActiveRecord::Schema.define(version: 20161114161030) do
     t.string   "unconfirmed_email"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "social_profiles", "users"
 end
